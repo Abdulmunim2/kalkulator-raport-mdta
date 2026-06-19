@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Raport MDTA Asysyifa Al-Musri'</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    /* Sembunyikan elemen tertentu saat proses cetak dokumen */
+    @media print {
+      header, .no-print, button, form, .modal, .no-print-area {
+        display: none !important;
+      }
+      body {
+        background-color: white !important;
+      }
+      .print-full-width {
+        width: 100% !important;
+        max-width: 100% !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+      input {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        width: auto !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50/50 text-slate-800 antialiased min-h-screen pb-16">
+
+  <!-- HEADER UTAMA -->
+  <header class="sticky top-0 z-40 bg-white/95 border-b border-slate-100 shadow-sm backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3.5">
+        <div class="bg-gradient-to-tr from-emerald-600 to-teal-500 p-2.5 rounded-2xl text-white shadow-md shadow-emerald-200/50 hover:rotate-3 transition-transform duration-300">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-extrabold tracking-tight text-slate-900">Kalkulator Raport MDTA</h1>
+          <p class="text-xs text-emerald-700 font-bold tracking-wide uppercase">Asysyifa Al-Musri'</p>
+        </div>
+      </div>
+      <div class="no-print flex items-center space-x-2 hidden sm:flex">
+        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
+          Aplikasi Siap Digunakan
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOAST NOTIFICATION KUSTOM -->
+  <div id="notification-toast" class="fixed bottom-6 right-6 z-50 flex items-center space-x-3 px-5 py-4 rounded-2xl shadow-xl border bg-emerald-50 border-emerald-200 text-emerald-800 hidden transition-all duration-300">
+    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <p id="notification-text" class="text-sm font-semibold"></p>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 print-full-width">
+
+    <!-- PANEL INFORMASI & KONFIGURASI BOBOT INTERAKTIF -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 no-print">
+      
+      <!-- KARTU UTAMA RUMUS AKTIF -->
+      <div class="lg:col-span-2 bg-gradient-to-r from-emerald-950 via-emerald-900 to-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-lg relative overflow-hidden flex flex-col justify-between">
+        <div class="absolute right-0 bottom-0 w-80 h-80 bg-white/5 rounded-full blur-3xl -z-10"></div>
+        <div class="space-y-3">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/20">
+            <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 11h.01M12 7h.01M9 11h.01M12 14h.01M15 11h.01M15 7h.01M3 12a9 9 0 1118 0 9 9 0 01-18 0z" />
+            </svg> 
+            Skema Penilaian Aktif
+          </span>
+          <h2 class="text-2xl font-black tracking-tight">Perhitungan Nilai Akhir Raport</h2>
+          <p class="text-sm text-emerald-100/80 leading-relaxed font-medium">
+            Nilai Akhir santri dikalkulasi secara transparan berdasarkan persentase bobot dinamis yang Anda tentukan. Pastikan total bobot berjumlah 100%.
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-emerald-800/60 flex flex-wrap gap-4 text-xs font-bold text-emerald-300">
+          <div class="flex items-center space-x-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+            <span>Harian: <span id="info-weight-harian">40</span>%</span>
+          </div>
+          <div id="info-badge-uts" class="hidden items-center space-x-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+            <span>UTS: <span id="info-weight-uts">0</span>%</span>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-teal-400"></span>
+            <span>UAS: <span id="info-weight-uas">40</span>%</span>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+            <span>Kehadiran: <span id="info-weight-kehadiran">20</span>%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KARTU INTERAKTIF PENYETELAN BOBOT & SKEMA ABSENSI -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-5">
+        <h3 class="font-extrabold text-slate-900 text-sm uppercase tracking-wider flex items-center space-x-2">
+          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+          </svg>
+          <span>Konfigurasi Penilaian</span>
+        </h3>
+
+        <!-- Pilihan Skema Penilaian (Tanpa/Dengan UTS) -->
+        <div class="space-y-2">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Indikator Penilaian</label>
+          <div class="grid grid-cols-2 gap-2 bg-slate-50 p-1 rounded-2xl border border-slate-100">
+            <button 
+              type="button" 
+              onclick="setGradingScheme('scheme1')"
+              id="btn-scheme-1"
+              class="py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 bg-white text-emerald-900 shadow-sm"
+            >
+              Tanpa UTS
+            </button>
+            <button 
+              type="button" 
+              onclick="setGradingScheme('scheme2')"
+              id="btn-scheme-2"
+              class="py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-800"
+            >
+              Dengan UTS
+            </button>
+          </div>
+        </div>
+
+        <!-- Pilihan Skema Absensi -->
+        <div class="space-y-2">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Skema Absensi</label>
+          <div class="grid grid-cols-2 gap-2 bg-slate-50 p-1 rounded-2xl border border-slate-100">
+            <button 
+              type="button" 
+              onclick="setAttendanceMode('direct')"
+              id="btn-mode-direct"
+              class="py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 bg-white text-emerald-900 shadow-sm"
+            >
+              Skor (0-100)
+            </button>
+            <button 
+              type="button" 
+              onclick="setAttendanceMode('meetings')"
+              id="btn-mode-meetings"
+              class="py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-800"
+            >
+              Jumlah Hari
+            </button>
+          </div>
+        </div>
+
+        <!-- Total Pertemuan (Hanya muncul jika mode pertemuan aktif) -->
+        <div id="container-total-meetings" class="space-y-1.5 hidden animate-fadeIn">
+          <label class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Total Pertemuan (Hari)</label>
+          <input 
+            type="number" 
+            id="weight-total-meetings" 
+            value="20" 
+            min="1"
+            oninput="handleTotalMeetingsChange(this.value)"
+            class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-xs font-bold text-slate-800"
+          />
+        </div>
+
+        <!-- Input Bobot Interaktif (Dapat Diedit Langsung) -->
+        <div class="space-y-3 pt-2 border-t border-slate-100">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bobot (%)</span>
+            <span id="weight-sum-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+              Total: 100%
+            </span>
+          </div>
+
+          <div id="weight-grid-container" class="grid grid-cols-3 gap-2">
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-400 uppercase block text-center">Harian</label>
+              <input 
+                type="number" 
+                id="weight-harian" 
+                value="40" 
+                min="0" max="100"
+                oninput="handleWeightUpdate()"
+                class="w-full px-1 py-1.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-center font-bold text-sm text-slate-800"
+              />
+            </div>
+            <!-- UTS Bobot (Tampil jika Scheme 2) -->
+            <div id="container-weight-uts" class="space-y-1 hidden">
+              <label class="text-[9px] font-bold text-slate-400 uppercase block text-center">UTS</label>
+              <input 
+                type="number" 
+                id="weight-uts" 
+                value="0" 
+                min="0" max="100"
+                oninput="handleWeightUpdate()"
+                class="w-full px-1 py-1.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-center font-bold text-sm text-slate-800"
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-400 uppercase block text-center">UAS</label>
+              <input 
+                type="number" 
+                id="weight-uas" 
+                value="40" 
+                min="0" max="100"
+                oninput="handleWeightUpdate()"
+                class="w-full px-1 py-1.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-center font-bold text-sm text-slate-800"
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-400 uppercase block text-center">Absensi</label>
+              <input 
+                type="number" 
+                id="weight-kehadiran" 
+                value="20" 
+                min="0" max="100"
+                oninput="handleWeightUpdate()"
+                class="w-full px-1 py-1.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-center font-bold text-sm text-slate-800"
+              />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- KARTU STATISTIK PENILAIAN KELAS -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 no-print">
+      <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center space-x-5 hover:border-emerald-200 transition-all duration-300 group">
+        <div class="p-4 bg-emerald-50 text-emerald-700 rounded-2xl group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Rata-Rata Kelas</p>
+          <h4 id="stat-average" class="text-3xl font-black text-slate-900 mt-1">0.0</h4>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center space-x-5 hover:border-emerald-200 transition-all duration-300 group">
+        <div class="p-4 bg-teal-50 text-teal-700 rounded-2xl group-hover:bg-teal-600 group-hover:text-white transition-all duration-300">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.957 11.957 0 01-5.618 3.03A12.006 12.006 0 002 12c0 5.589 4.316 10.158 9.8 11.144a11.93 11.93 0 002.4 0C19.684 22.158 24 17.589 24 12a12.006 12.006 0 00-3.618-6.016z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Nilai Tertinggi</p>
+          <h4 id="stat-highest" class="text-3xl font-black text-slate-900 mt-1">0.0</h4>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center space-x-5 hover:border-emerald-200 transition-all duration-300 group">
+        <div class="p-4 bg-indigo-50 text-indigo-700 rounded-2xl group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Santri Terdaftar</p>
+          <h4 id="stat-total" class="text-3xl font-black text-slate-900 mt-1">0 Santri</h4>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFIKASI JIKA PRESET BOBOT TIDAK 100% -->
+    <div id="weight-warning-banner" class="bg-rose-50 border border-rose-200 p-4 rounded-3xl text-rose-800 hidden no-print animate-fadeIn">
+      <div class="flex items-start space-x-3">
+        <svg class="w-5 h-5 flex-shrink-0 mt-0.5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <div>
+          <h4 class="font-extrabold text-sm">Akumulasi Bobot Tidak Valid</h4>
+          <p class="text-xs mt-1 leading-relaxed">Persentase total bobot indikator belum berjumlah 100%. Harap sesuaikan angka pada panel konfigurasi agar perhitungan dapat diproses.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL GAYA LAYOUT UTAMA -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      
+      <!-- FORM INPUT DATA MANUAL -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-6 lg:sticky lg:top-24 no-print">
+        <div class="flex items-center space-x-2.5 pb-4 border-b border-slate-100">
+          <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+          </svg>
+          <h3 class="font-extrabold text-slate-900 text-lg">Input Manual Santri</h3>
+        </div>
+
+        <form id="add-student-form" onsubmit="handleAddStudent(event)" class="space-y-4">
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Nama Lengkap Santri</label>
+            <input
+              type="text"
+              id="student-name"
+              placeholder="Contoh: Muhammad Raihan"
+              class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm font-semibold"
+              required
+            />
+          </div>
+
+          <!-- Grid Dinamis Input Nilai -->
+          <div id="form-grid-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Nilai Harian</label>
+              <input
+                type="number"
+                id="grade-harian"
+                min="0" max="100"
+                placeholder="0-100"
+                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm font-bold"
+                required
+              />
+            </div>
+
+            <!-- Input UTS (Ditampilkan sesuai skema) -->
+            <div id="container-input-uts" class="space-y-1.5 hidden">
+              <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Nilai UTS</label>
+              <input
+                type="number"
+                id="grade-uts"
+                min="0" max="100"
+                placeholder="0-100"
+                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm font-bold"
+              />
+            </div>
+
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Nilai UAS</label>
+              <input
+                type="number"
+                id="grade-uas"
+                min="0" max="100"
+                placeholder="0-100"
+                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm font-bold"
+                required
+              />
+            </div>
+
+            <div class="space-y-1.5">
+              <label id="label-attendance-input" class="text-xs font-bold text-slate-400 uppercase tracking-wider block transition-colors duration-300">
+                Absensi
+              </label>
+              <input
+                type="number"
+                id="grade-kehadiran"
+                min="0" max="100"
+                placeholder="0-100"
+                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm font-bold text-slate-800"
+                required
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full mt-4 flex items-center justify-center space-x-2 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-2xl font-bold text-sm shadow-md shadow-emerald-200 hover:shadow-lg hover:shadow-emerald-300 hover:-translate-y-0.5 transform active:scale-95 transition-all duration-300"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Tambahkan Santri</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- TABEL REKAPITULASI DATA SISWA -->
+      <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden print-full-width">
+        <div class="px-6 py-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-50/20">
+          <div>
+            <h3 class="font-extrabold text-slate-900 text-lg">Lembar Penilaian Santri</h3>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">Nilai bersifat final dan dihitung otomatis berdasarkan pembobotan.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2.5 no-print">
+            <button
+              onclick="openBulkModal()"
+              class="flex items-center space-x-2 px-3.5 py-2 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-100 hover:bg-emerald-100/80 rounded-xl transition-all duration-300"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+              <span>Impor Massal</span>
+            </button>
+            <button
+              onclick="openExportModal()"
+              class="flex items-center space-x-2 px-3.5 py-2 text-xs font-bold text-indigo-800 bg-indigo-50 border border-indigo-100 hover:bg-indigo-100/80 rounded-xl transition-all duration-300"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+              <span>Ekspor Data</span>
+            </button>
+            <button
+              onclick="triggerConfirmDialog('Semua data santri akan dihapus permanen. Lanjutkan?', clearAllData)"
+              class="flex items-center space-x-2 px-3.5 py-2 text-xs font-bold text-rose-800 bg-rose-50 border border-rose-100 hover:bg-rose-100/80 rounded-xl transition-all duration-300"
+            >
+              <span>Kosongkan</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- TABEL UTAMA -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[700px]">
+            <thead>
+              <tr class="border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50/20">
+                <th class="px-6 py-4 w-12 text-center font-bold">No</th>
+                <th class="px-6 py-4 min-w-[180px]">Nama Lengkap</th>
+                <th class="px-3 py-4 text-center w-20">Harian</th>
+                <!-- Header UTS dinamis -->
+                <th id="header-col-uts" class="px-3 py-4 text-center w-20 hidden text-amber-600">UTS</th>
+                <th class="px-3 py-4 text-center w-20">UAS</th>
+                <th class="px-4 py-4 text-center w-28" id="header-kehadiran-col">Absensi</th>
+                <th class="px-4 py-4 text-center w-24 bg-slate-50/50 text-emerald-800 font-extrabold">Nilai Akhir</th>
+                <th class="px-4 py-4 text-center w-24">Predikat</th>
+                <th class="px-6 py-4 text-right w-16 no-print">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="students-table-body" class="divide-y divide-slate-100 text-sm">
+              <!-- Baris data diisi oleh Javascript secara dinamis -->
+            </tbody>
+          </table>
+          
+          <div id="empty-state" class="py-20 text-center space-y-3 hidden">
+            <div class="inline-flex p-4 bg-slate-100 text-slate-400 rounded-full">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+            <h5 class="font-bold text-slate-700 text-base">Tidak Ada Data Santri</h5>
+            <p class="text-xs text-slate-400 max-w-sm mx-auto">Silakan tambahkan data menggunakan form masukan manual atau fitur impor massal.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL IMPOR MASSAL -->
+  <div id="bulk-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 hidden modal animate-fadeIn">
+    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all duration-300">
+      <div class="px-6 py-5 bg-gradient-to-r from-emerald-900 to-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          <h3 class="font-extrabold text-lg">Impor Data Santri Massal</h3>
+        </div>
+        <button onclick="closeBulkModal()" class="text-white/80 hover:text-white font-bold w-8 h-8 rounded-lg">✕</button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <h4 class="text-xs font-bold text-slate-700 flex items-center mb-1.5">Format Penyusunan Teks</h4>
+          <p id="bulk-format-helper" class="text-[11px] text-slate-500 leading-relaxed font-semibold">
+            <!-- Diisi via JS sesuai skema aktif -->
+          </p>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-slate-600 uppercase tracking-wider block">Teks Masukan Nilai</label>
+          <textarea id="bulk-input-text" rows="6" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-xs font-mono leading-relaxed"></textarea>
+        </div>
+
+        <div class="flex justify-end space-x-3 pt-4 border-t border-slate-100">
+          <button onclick="closeBulkModal()" class="px-4 py-2.5 text-xs font-bold text-slate-500 bg-slate-100 rounded-xl">Batalkan</button>
+          <button onclick="handleBulkTextParse()" class="px-6 py-2.5 bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md">Proses Impor</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EKSPOR DATA -->
+  <div id="export-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 hidden modal animate-fadeIn">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-100 overflow-hidden">
+      <div class="px-6 py-5 bg-gradient-to-r from-indigo-900 to-slate-900 text-white flex items-center justify-between">
+        <h3 class="font-extrabold text-lg">Opsi Ekspor Laporan</h3>
+        <button onclick="closeExportModal()" class="text-white/80 hover:text-white font-bold w-8 h-8">✕</button>
+      </div>
+      <div class="p-6 space-y-3">
+        <button onclick="copyWhatsAppReport()" class="w-full flex items-center justify-between px-4 py-3 bg-emerald-50 text-emerald-800 rounded-xl hover:bg-emerald-100 border border-emerald-200 transition-all">
+          <span class="font-bold text-sm">Salin ke WhatsApp</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        </button>
+        <button onclick="downloadCSV()" class="w-full flex items-center justify-between px-4 py-3 bg-blue-50 text-blue-800 rounded-xl hover:bg-blue-100 border border-blue-200 transition-all">
+          <span class="font-bold text-sm">Unduh File Excel (.csv)</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        </button>
+        <button onclick="executePrint()" class="w-full flex items-center justify-between px-4 py-3 bg-slate-50 text-slate-800 rounded-xl hover:bg-slate-100 border border-slate-200 transition-all">
+          <span class="font-bold text-sm">Cetak / Simpan PDF</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-5a2 2 0 00-2-2H5a2 2 0 00-2 2v5a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DIALOG KONFIRMASI KUSTOM -->
+  <div id="confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 hidden modal animate-fadeIn">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-100 overflow-hidden">
+      <div class="p-6 text-center space-y-4">
+        <div class="inline-flex p-4 bg-rose-50 text-rose-600 rounded-full">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h3 class="font-extrabold text-slate-900 text-lg">Konfirmasi Aksi</h3>
+        <p id="confirm-modal-text" class="text-sm text-slate-500 font-medium leading-relaxed"></p>
+        <div class="flex justify-center space-x-3 pt-2">
+          <button onclick="closeConfirmModal()" class="px-5 py-2.5 text-xs font-bold text-slate-500 bg-slate-100 rounded-xl">Batalkan</button>
+          <button id="btn-confirm-action" class="px-6 py-2.5 bg-rose-600 text-white text-xs font-bold rounded-xl shadow-md">Lanjutkan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="text-center py-10 border-t border-slate-100 bg-white no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2">
+      <p class="text-sm font-bold text-slate-900">Aplikasi Pengolahan Nilai Raport MDTA Asysyifa Al-Musri' © 2026</p>
+      <p class="text-xs text-slate-400 font-semibold">Dirancang khusus untuk administrasi nilai madrasah secara akurat, modern, dan profesional.</p>
+    </div>
+  </footer>
+
+  <script>
+    // --- STATE UTAMA APLIKASI ---
+    let students = [
+      { id: '1', name: "Ahmad Fauzi", harian: 85, uts: 80, uas: 80, kehadiran: 95 },
+      { id: '2', name: "Siti Aminah", harian: 90, uts: 88, uas: 85, kehadiran: 100 },
+      { id: '3', name: "Zaki Mubarak", harian: 72, uts: 70, uas: 65, kehadiran: 80 }
+    ];
+
+    let activeScheme = 'scheme1'; // 'scheme1' (Tanpa UTS) or 'scheme2' (Dengan UTS)
+    let attendanceMode = 'direct'; 
+    let totalMeetings = 20;
+
+    let weights = {
+      harian: 40,
+      uts: 0,
+      uas: 40,
+      kehadiran: 20
+    };
+
+    let activeConfirmCallback = null;
+
+    // --- INITIALIZATION ---
+    window.onload = function() {
+      syncInputsWithState();
+      renderApp();
+    };
+
+    function syncInputsWithState() {
+      document.getElementById('weight-harian').value = weights.harian;
+      document.getElementById('weight-uts').value = weights.uts;
+      document.getElementById('weight-uas').value = weights.uas;
+      document.getElementById('weight-kehadiran').value = weights.kehadiran;
+      document.getElementById('weight-total-meetings').value = totalMeetings;
+      updateWeightTexts();
+    }
+
+    // --- LOGIKA PERHITUNGAN ---
+    function isWeightValid() {
+      const sum = weights.harian + weights.uts + weights.uas + weights.kehadiran;
+      return sum === 100;
+    }
+
+    function getKehadiranScore(value) {
+      if (attendanceMode === 'meetings') {
+        const meetingsInput = parseFloat(value) || 0;
+        const converted = (meetingsInput / totalMeetings) * 100;
+        return Math.min(100, parseFloat(converted.toFixed(1)));
+      }
+      return parseFloat(value) || 0;
+    }
+
+    function calculateSingleGradeValue(st) {
+      if (!isWeightValid()) return 0;
+      
+      const h = parseFloat(st.harian) || 0;
+      const ut = (activeScheme === 'scheme2') ? (parseFloat(st.uts) || 0) : 0;
+      const ua = parseFloat(st.uas) || 0;
+      const k = getKehadiranScore(st.kehadiran);
+
+      const finalVal = ((h * weights.harian) + (ut * weights.uts) + (ua * weights.uas) + (k * weights.kehadiran)) / 100;
+      return parseFloat(finalVal.toFixed(1));
+    }
+
+    function getGradeLetterInfo(score) {
+      if (!isWeightValid()) return { letter: "-", desc: "Tidak Valid", color: "text-slate-400 bg-slate-50 border-slate-200" };
+      if (score >= 85) return { letter: "A", desc: "Istimewa", color: "text-emerald-700 bg-emerald-50 border-emerald-200" };
+      if (score >= 75) return { letter: "B", desc: "Baik", color: "text-teal-700 bg-teal-50 border-teal-200" };
+      if (score >= 65) return { letter: "C", desc: "Cukup", color: "text-amber-700 bg-amber-50 border-amber-200" };
+      if (score >= 50) return { letter: "D", desc: "Kurang", color: "text-orange-700 bg-orange-50 border-orange-200" };
+      return { letter: "E", desc: "Sangat Kurang", color: "text-rose-700 bg-rose-50 border-rose-200" };
+    }
+
+    // --- Handler Interaktif UI dan Skema ---
+    function setGradingScheme(scheme) {
+      activeScheme = scheme;
+      const btn1 = document.getElementById('btn-scheme-1');
+      const btn2 = document.getElementById('btn-scheme-2');
+      const utsInputs = document.getElementById('container-input-uts');
+      const utsWeights = document.getElementById('container-weight-uts');
+      const infoBadgeUts = document.getElementById('info-badge-uts');
+      const headerColUts = document.getElementById('header-col-uts');
+      const gridContainer = document.getElementById('weight-grid-container');
+      const formGrid = document.getElementById('form-grid-container');
+
+      if (scheme === 'scheme1') {
+        // Mode Tanpa UTS
+        btn1.className = "py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 bg-white text-emerald-900 shadow-sm";
+        btn2.className = "py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-800";
+        
+        utsInputs.classList.add('hidden');
+        utsWeights.classList.add('hidden');
+        infoBadgeUts.classList.add('hidden');
+        headerColUts.classList.add('hidden');
+        gridContainer.classList.replace('grid-cols-4', 'grid-cols-3');
+        formGrid.classList.replace('sm:grid-cols-4', 'sm:grid-cols-3');
+
+        // Reset default weight for scheme 1
+        weights = { harian: 40, uts: 0, uas: 40, kehadiran: 20 };
+      } else {
+        // Mode Dengan UTS
+        btn2.className = "py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 bg-white text-emerald-900 shadow-sm";
+        btn1.className = "py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-800";
+        
+        utsInputs.classList.remove('hidden');
+        utsWeights.classList.remove('hidden');
+        infoBadgeUts.classList.remove('hidden');
+        infoBadgeUts.classList.add('flex');
+        headerColUts.classList.remove('hidden');
+        gridContainer.classList.replace('grid-cols-3', 'grid-cols-4');
+        formGrid.classList.replace('sm:grid-cols-3', 'sm:grid-cols-4');
+
+        // Reset default weight for scheme 2
+        weights = { harian: 20, uts: 30, uas: 30, kehadiran: 20 };
+      }
+      
+      syncInputsWithState();
+      handleWeightUpdate(); // trigger validity check
+      renderApp();
+    }
+
+    function setAttendanceMode(mode) {
+      attendanceMode = mode;
+      const btnDirect = document.getElementById('btn-mode-direct');
+      const btnMeetings = document.getElementById('btn-mode-meetings');
+      const containerMeetings = document.getElementById('container-total-meetings');
+      const attendanceLabelInput = document.getElementById('label-attendance-input');
+      const attendanceInput = document.getElementById('grade-kehadiran');
+
+      if (mode === 'direct') {
+        btnDirect.className = "py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 bg-white text-emerald-900 shadow-sm";
+        btnMeetings.className = "py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-800";
+        containerMeetings.classList.add('hidden');
+        attendanceLabelInput.innerText = "Absensi (0-100)";
+        attendanceInput.placeholder = "0-100";
+        attendanceInput.max = 100;
+      } else {
+        btnDirect.className = "py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-800";
+        btnMeetings.className = "py-2 px-3 text-xs font-bold rounded-xl transition-all duration-300 bg-white text-emerald-900 shadow-sm";
+        containerMeetings.classList.remove('hidden');
+        attendanceLabelInput.innerText = `Absen (Max ${totalMeetings})`;
+        attendanceInput.placeholder = `0-${totalMeetings}`;
+        attendanceInput.max = totalMeetings;
+      }
+      renderApp();
+    }
+
+    function handleTotalMeetingsChange(value) {
+      totalMeetings = parseInt(value) || 20;
+      if (attendanceMode === 'meetings') {
+        document.getElementById('label-attendance-input').innerText = `Absen (Max ${totalMeetings})`;
+        document.getElementById('grade-kehadiran').max = totalMeetings;
+        document.getElementById('grade-kehadiran').placeholder = `0-${totalMeetings}`;
+      }
+      renderApp();
+    }
+
+    function updateWeightTexts() {
+      document.getElementById('info-weight-harian').innerText = weights.harian;
+      document.getElementById('info-weight-uts').innerText = weights.uts;
+      document.getElementById('info-weight-uas').innerText = weights.uas;
+      document.getElementById('info-weight-kehadiran').innerText = weights.kehadiran;
+    }
+
+    function handleWeightUpdate() {
+      weights.harian = parseInt(document.getElementById('weight-harian').value) || 0;
+      weights.uts = parseInt(document.getElementById('weight-uts').value) || 0;
+      weights.uas = parseInt(document.getElementById('weight-uas').value) || 0;
+      weights.kehadiran = parseInt(document.getElementById('weight-kehadiran').value) || 0;
+
+      // Paksa bobot UTS 0 jika scheme1 untuk keamanan rumus
+      if (activeScheme === 'scheme1') weights.uts = 0;
+
+      const sum = weights.harian + weights.uts + weights.uas + weights.kehadiran;
+      const badge = document.getElementById('weight-sum-badge');
+      const warningBanner = document.getElementById('weight-warning-banner');
+
+      badge.innerText = `Total: ${sum}%`;
+
+      if (sum === 100) {
+        badge.className = "px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100";
+        warningBanner.classList.add('hidden');
+      } else {
+        badge.className = "px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-100";
+        warningBanner.classList.remove('hidden');
+      }
+
+      updateWeightTexts();
+      renderApp();
+    }
+
+    // --- Merender Tabel dan Manipulasi DOM ---
+    function renderApp() {
+      const tbody = document.getElementById('students-table-body');
+      const emptyState = document.getElementById('empty-state');
+      tbody.innerHTML = '';
+
+      const colHeader = document.getElementById('header-kehadiran-col');
+      if (attendanceMode === 'meetings') colHeader.innerText = `Absen (Hari)`;
+      else colHeader.innerText = `Absen (%)`;
+
+      if (students.length === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+
+        students.forEach((student, idx) => {
+          const finalVal = calculateSingleGradeValue(student);
+          const gradeInfo = getGradeLetterInfo(finalVal);
+
+          let attendanceDisplay = student.kehadiran;
+          if (attendanceMode === 'meetings') {
+            attendanceDisplay = `${student.kehadiran}`;
+          }
+
+          const utsCell = activeScheme === 'scheme2' ? `
+            <td class="px-3 py-4 text-center">
+              <input type="number" min="0" max="100" value="${student.uts}"
+                onchange="handleInlineUpdate('${student.id}', 'uts', this.value)"
+                class="w-12 text-center bg-transparent border-b border-transparent hover:border-slate-300 focus:border-amber-500 focus:bg-white focus:outline-none px-1 py-0.5 font-bold text-amber-700" />
+            </td>` : '';
+
+          const tr = document.createElement('tr');
+          tr.className = "hover:bg-slate-50/40 transition-colors duration-200";
+          tr.innerHTML = `
+            <td class="px-6 py-4 text-center font-bold text-slate-300">${idx + 1}</td>
+            <td class="px-6 py-4">
+              <input type="text" value="${student.name}" onchange="handleInlineUpdate('${student.id}', 'name', this.value)" class="w-full bg-transparent font-bold text-slate-800 border-b border-transparent hover:border-slate-300 focus:border-emerald-600 focus:bg-white focus:outline-none px-1 py-0.5 rounded-sm" />
+            </td>
+            <td class="px-3 py-4 text-center">
+              <input type="number" min="0" max="100" value="${student.harian}" onchange="handleInlineUpdate('${student.id}', 'harian', this.value)" class="w-12 text-center bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-600 focus:bg-white focus:outline-none px-1 py-0.5 font-bold" />
+            </td>
+            ${utsCell}
+            <td class="px-3 py-4 text-center">
+              <input type="number" min="0" max="100" value="${student.uas}" onchange="handleInlineUpdate('${student.id}', 'uas', this.value)" class="w-12 text-center bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-600 focus:bg-white focus:outline-none px-1 py-0.5 font-bold" />
+            </td>
+            <td class="px-3 py-4 text-center">
+              <div class="flex flex-col items-center justify-center">
+                <input type="number" min="0" max="${attendanceMode === 'meetings' ? totalMeetings : 100}" value="${student.kehadiran}" onchange="handleInlineUpdate('${student.id}', 'kehadiran', this.value)" class="w-12 text-center bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-600 focus:bg-white focus:outline-none px-1 py-0.5 font-bold text-slate-800" />
+                ${attendanceMode === 'meetings' ? `<span class="text-[9px] text-slate-400 font-bold mt-0.5">${getKehadiranScore(student.kehadiran)}%</span>` : ''}
+              </div>
+            </td>
+            <td class="px-4 py-4 text-center bg-slate-50/50">
+              <span class="text-base font-black text-emerald-800">${isWeightValid() ? finalVal : '-'}</span>
+            </td>
+            <td class="px-4 py-4 text-center">
+              <span class="inline-flex px-3 py-1 rounded-full text-[11px] font-bold border ${gradeInfo.color}">
+                ${isWeightValid() ? gradeInfo.letter : '-'}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-right no-print">
+              <button onclick="triggerConfirmDialog('Hapus data nilai santri ${student.name}?', () => handleDeleteStudent('${student.id}', '${student.name}'))" class="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-all" title="Hapus">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+      updateStatistics();
+    }
+
+    function updateStatistics() {
+      const total = students.length;
+      let sum = 0, highest = 0;
+      if (isWeightValid() && total > 0) {
+        students.forEach(st => {
+          const score = calculateSingleGradeValue(st);
+          sum += score;
+          if (score > highest) highest = score;
+        });
+      }
+      document.getElementById('stat-average').innerText = (isWeightValid() && total > 0) ? (sum / total).toFixed(1) : "0.0";
+      document.getElementById('stat-highest').innerText = highest.toFixed(1);
+      document.getElementById('stat-total').innerText = `${total} Santri`;
+    }
+
+    // --- CRUD OPERATORS ---
+    function handleAddStudent(e) {
+      e.preventDefault();
+      const name = document.getElementById('student-name').value.trim();
+      const harian = parseFloat(document.getElementById('grade-harian').value) || 0;
+      const uts = parseFloat(document.getElementById('grade-uts').value) || 0;
+      const uas = parseFloat(document.getElementById('grade-uas').value) || 0;
+      const kehadiran = parseFloat(document.getElementById('grade-kehadiran').value) || 0;
+
+      if (!name) return showToast("Nama santri tidak boleh kosong.", "error");
+      if (attendanceMode === 'meetings' && kehadiran > totalMeetings) {
+        return showToast(`Kehadiran melampaui batas maksimal (${totalMeetings}).`, "error");
+      }
+
+      students.unshift({ id: String(Date.now()), name, harian, uts, uas, kehadiran });
+      showToast(`Data ${name} berhasil ditambahkan.`);
+      document.getElementById('add-student-form').reset();
+      renderApp();
+    }
+
+    function handleInlineUpdate(id, field, value) {
+      students = students.map(student => {
+        if (student.id === id) {
+          if (field === 'name') return { ...student, name: value.trim() };
+          let numVal = parseFloat(value) || 0;
+          if (field === 'kehadiran' && attendanceMode === 'meetings') numVal = Math.min(totalMeetings, numVal);
+          return { ...student, [field]: numVal };
+        }
+        return student;
+      });
+      renderApp();
+    }
+
+    function handleDeleteStudent(id, studentName) {
+      students = students.filter(student => student.id !== id);
+      showToast(`Data ${studentName} berhasil dihapus.`);
+      renderApp();
+    }
+
+    function clearAllData() {
+      students = [];
+      showToast("Seluruh data dikosongkan.");
+      closeConfirmModal();
+      renderApp();
+    }
+
+    // --- UI HELPERS ---
+    function triggerConfirmDialog(text, callback) {
+      document.getElementById('confirm-modal-text').innerText = text;
+      document.getElementById('confirm-modal').classList.remove('hidden');
+      activeConfirmCallback = callback;
+      document.getElementById('btn-confirm-action').onclick = function() {
+        if (activeConfirmCallback) activeConfirmCallback();
+      };
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirm-modal').classList.add('hidden');
+      activeConfirmCallback = null;
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('notification-toast');
+      document.getElementById('notification-text').innerText = message;
+      toast.className = `fixed bottom-6 right-6 z-50 flex items-center space-x-3 px-5 py-4 rounded-2xl shadow-xl border ${type === 'error' ? 'bg-rose-50 border-rose-200 text-rose-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800'} animate-fadeIn`;
+      setTimeout(() => toast.classList.add('hidden'), 4000);
+    }
+
+    // --- Logika Impor dan Ekspor (CSV, PDF, WA) ---
+    function openBulkModal() {
+      document.getElementById('bulk-modal').classList.remove('hidden');
+      const formatHelper = document.getElementById('bulk-format-helper');
+      if (activeScheme === 'scheme2') {
+        formatHelper.innerHTML = `Gunakan strip ( - ) per baris.<br/><strong>Format:</strong> Nama - Harian - UTS - UAS - Absensi<br/><strong>Contoh:</strong> Muhammad Raihan - 85 - 80 - 90 - 20`;
+      } else {
+        formatHelper.innerHTML = `Gunakan strip ( - ) per baris.<br/><strong>Format:</strong> Nama - Harian - UAS - Absensi<br/><strong>Contoh:</strong> Siti Nurhaliza - 90 - 85 - 18`;
+      }
+    }
+
+    function closeBulkModal() {
+      document.getElementById('bulk-modal').classList.add('hidden');
+      document.getElementById('bulk-input-text').value = '';
+    }
+
+    function handleBulkTextParse() {
+      const text = document.getElementById('bulk-input-text').value;
+      if (!text.trim()) return showToast("Teks tidak boleh kosong.", "error");
+
+      const lines = text.split('\n');
+      const parsed = [];
+
+      lines.forEach((line, idx) => {
+        if (!line.trim()) return;
+        const parts = line.split(/[-]/).map(p => p.trim());
+        
+        if (parts.length >= 4 && activeScheme === 'scheme1') {
+          let kehadiran = parseFloat(parts[3]) || 0;
+          if (attendanceMode === 'meetings') kehadiran = Math.min(totalMeetings, kehadiran);
+          else kehadiran = Math.min(100, kehadiran);
+
+          parsed.push({
+            id: String(Date.now() + idx),
+            name: parts[0],
+            harian: parseFloat(parts[1]) || 0,
+            uts: 0,
+            uas: parseFloat(parts[2]) || 0,
+            kehadiran: kehadiran
+          });
+        } else if (parts.length >= 5 && activeScheme === 'scheme2') {
+          let kehadiran = parseFloat(parts[4]) || 0;
+          if (attendanceMode === 'meetings') kehadiran = Math.min(totalMeetings, kehadiran);
+          else kehadiran = Math.min(100, kehadiran);
+
+          parsed.push({
+            id: String(Date.now() + idx),
+            name: parts[0],
+            harian: parseFloat(parts[1]) || 0,
+            uts: parseFloat(parts[2]) || 0,
+            uas: parseFloat(parts[3]) || 0,
+            kehadiran: kehadiran
+          });
+        }
+      });
+
+      if (parsed.length > 0) {
+        students = [...students, ...parsed];
+        showToast(`Mengimpor ${parsed.length} data.`);
+        closeBulkModal();
+        renderApp();
+      } else {
+        showToast("Gagal membaca teks. Format tidak sesuai skema.", "error");
+      }
+    }
+
+    function openExportModal() {
+      document.getElementById('export-modal').classList.remove('hidden');
+    }
+    
+    function closeExportModal() {
+      document.getElementById('export-modal').classList.add('hidden');
+    }
+
+    function copyWhatsAppReport() {
+      if (students.length === 0) return showToast("Tidak ada data untuk diekspor.", "error");
+      if (!isWeightValid()) return showToast("Gagal menyalin: Bobot tidak valid.", "error");
+
+      let report = `📋 *LAPORAN HASIL BELAJAR MDTA ASYSYIFA AL-MUSRI'*\n`;
+      report += `===================================\n`;
+      if (activeScheme === 'scheme2') {
+        report += `*Bobot:* Harian (${weights.harian}%), UTS (${weights.uts}%), UAS (${weights.uas}%), Absen (${weights.kehadiran}%)\n`;
+      } else {
+        report += `*Bobot:* Harian (${weights.harian}%), UAS (${weights.uas}%), Absen (${weights.kehadiran}%)\n`;
+      }
+      report += `===================================\n\n`;
+
+      students.forEach((st, idx) => {
+        const finalGrade = calculateSingleGradeValue(st);
+        const gradeInfo = getGradeLetterInfo(finalGrade);
+        let attText = attendanceMode === 'meetings' ? `${st.kehadiran}/${totalMeetings} hari` : `${st.kehadiran}`;
+
+        report += `${idx + 1}. *${st.name}*\n`;
+        report += `   - Harian: ${st.harian}\n`;
+        if (activeScheme === 'scheme2') report += `   - UTS: ${st.uts}\n`;
+        report += `   - UAS: ${st.uas}\n`;
+        report += `   - Absen: ${attText}\n`;
+        report += `   - *NILAI AKHIR: ${finalGrade}* (*${gradeInfo.letter}*)\n\n`;
+      });
+
+      const tempTextArea = document.createElement('textarea');
+      tempTextArea.value = report;
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempTextArea);
+
+      closeExportModal();
+      showToast("Berhasil disalin! Siap ditempel di WhatsApp.");
+    }
+
+    function downloadCSV() {
+      if (students.length === 0) return showToast("Tidak ada data untuk diunduh.", "error");
+      
+      let csvContent = "data:text/csv;charset=utf-8,";
+      // Header CSV
+      if (activeScheme === 'scheme2') {
+        csvContent += "No,Nama Lengkap,Nilai Harian,Nilai UTS,Nilai UAS,Kehadiran,Nilai Akhir,Predikat\n";
+      } else {
+        csvContent += "No,Nama Lengkap,Nilai Harian,Nilai UAS,Kehadiran,Nilai Akhir,Predikat\n";
+      }
+
+      // Data baris
+      students.forEach((st, idx) => {
+        const finalGrade = isWeightValid() ? calculateSingleGradeValue(st) : "Invalid";
+        const gradeInfo = isWeightValid() ? getGradeLetterInfo(finalGrade).letter : "-";
+        
+        let rowData;
+        if (activeScheme === 'scheme2') {
+          rowData = [idx + 1, `"${st.name}"`, st.harian, st.uts, st.uas, st.kehadiran, finalGrade, gradeInfo];
+        } else {
+          rowData = [idx + 1, `"${st.name}"`, st.harian, st.uas, st.kehadiran, finalGrade, gradeInfo];
+        }
+        csvContent += rowData.join(",") + "\n";
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "Laporan_Nilai_MDTA_Asysyifa.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      closeExportModal();
+      showToast("Berhasil mengunduh format Excel (.csv).");
+    }
+
+    function executePrint() {
+      closeExportModal();
+      window.print();
+    }
+  </script>
+</body>
+</html>
